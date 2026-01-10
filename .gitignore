@@ -1,0 +1,77 @@
+# ========================
+# Root .gitignore
+# ========================
+
+# ------------------------
+# OS
+# ------------------------
+.DS_Store
+Thumbs.db
+
+# ------------------------
+# Logs
+# ------------------------
+*.log
+*.log.*
+
+# ------------------------
+# Env files
+# ------------------------
+.env
+.env.*       # nếu có nhiều env
+*.local      # config local
+
+# ------------------------
+# Python / Backend (FastAPI)
+# ------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.swp
+*.swo
+*.sqlite3
+venv/
+env/
+.venv/
+.idea/
+.mypy_cache/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Alembic migrations cache
+alembic/versions/*.pyc
+
+# ------------------------
+# Node / Frontend (React + Vite + Tailwind)
+# ------------------------
+node_modules/
+dist/
+build/
+*.log
+.vite/
+.cache/
+.npm/
+.yarn/
+.pnp.*
+pnpm-lock.yaml
+
+# Tailwind cache
+.tailwindcache
+
+# ------------------------
+# Docker
+# ------------------------
+*.pid
+*.sock
+docker-compose.override.yml
+
+# ------------------------
+# IDEs
+# ------------------------
+.vscode/
+.idea/
+*.iml
