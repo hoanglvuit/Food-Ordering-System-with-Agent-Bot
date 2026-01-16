@@ -24,8 +24,6 @@ def read_orders(
     if current_user.is_superuser:
         orders = crud.order.get_multi(db, skip=skip, limit=limit)
     else:
-        # Custom logic to get orders for current user
-        # We need to add get_multi_by_owner to CRUDOrder or just filter here
         orders = (
             db.query(models.Order)
             .filter(models.Order.user_id == current_user.id)

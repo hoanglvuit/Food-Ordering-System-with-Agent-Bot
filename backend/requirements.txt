@@ -11,3 +11,6 @@ python-multipart
 emails
 pydantic-settings
 argon2-cffi
+langchain 
+langgraph
+langchain-google-genai

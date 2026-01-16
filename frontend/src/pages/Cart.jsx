@@ -12,6 +12,7 @@ const Cart = () => {
   const [address, setAddress] = useState('');
   const [vouchers, setVouchers] = useState([]);
   const [selectedVoucherId, setSelectedVoucherId] = useState('');
+  const [voucherError, setVoucherError] = useState('');
   const [loading, setLoading] = useState(false);
   const [shippingConfig, setShippingConfig] = useState({ base_fee: 0, price_per_km: 0 });
 
@@ -72,6 +73,34 @@ const Cart = () => {
   };
 
   const selectedVoucher = vouchers.find(v => v.id === parseInt(selectedVoucherId));
+
+  // Check if voucher meets minimum order value
+  const getSubtotal = () => {
+    return cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  };
+
+  const handleVoucherChange = (voucherId) => {
+    setVoucherError('');
+    if (!voucherId) {
+      setSelectedVoucherId('');
+      return;
+    }
+
+    const voucher = vouchers.find(v => v.id === parseInt(voucherId));
+    if (voucher) {
+      const subtotal = getSubtotal();
+      if (subtotal < voucher.min_order_value) {
+        setVoucherError(
+          `Không thể áp dụng voucher này. Đơn hàng tối thiểu: ${voucher.min_order_value.toLocaleString('vi-VN')}₫ (hiện tại: ${Math.round(subtotal).toLocaleString('vi-VN')}₫)`
+        );
+        setSelectedVoucherId('');
+        addToast(`Voucher yêu cầu đơn tối thiểu ${voucher.min_order_value.toLocaleString('vi-VN')}₫`, 'warning');
+        return;
+      }
+    }
+    setSelectedVoucherId(voucherId);
+    addToast('Áp dụng voucher thành công!', 'success');
+  };
 
   const calculateTotal = () => {
     const subtotal = cartItems.reduce(
@@ -227,7 +256,7 @@ const Cart = () => {
                 </label>
                 <select
                   value={selectedVoucherId}
-                  onChange={(e) => setSelectedVoucherId(e.target.value)}
+                  onChange={(e) => handleVoucherChange(e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 >
                   <option value="">-- Không sử dụng voucher --</option>
@@ -235,13 +264,17 @@ const Cart = () => {
                     <option key={voucher.id} value={voucher.id}>
                       {voucher.name} - {voucher.discount_type === 'fixed' || voucher.discount_type === 'FIXED'
                         ? `${voucher.discount_value.toLocaleString('vi-VN')}₫`
-                        : `${voucher.discount_value}%`} (Mã: {voucher.code})
+                        : `${voucher.discount_value}%`}
+                      {voucher.min_order_value > 0 && `(Tối thiểu: ${voucher.min_order_value.toLocaleString('vi-VN')}₫)`}
                     </option>
                   ))}
                 </select>
-                {selectedVoucher && (
+                {voucherError && (
+                  <p className="text-red-500 text-sm mt-2">{voucherError}</p>
+                )}
+                {selectedVoucher && !voucherError && (
                   <p className="text-green-600 text-sm mt-2">
-                    Đã chọn: {selectedVoucher.name}
+                    Đã áp dụng: {selectedVoucher.name}
                   </p>
                 )}
               </div>

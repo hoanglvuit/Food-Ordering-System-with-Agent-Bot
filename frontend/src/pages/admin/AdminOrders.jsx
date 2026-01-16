@@ -32,9 +32,27 @@ const AdminOrders = () => {
       confirmed: 'bg-blue-100 text-blue-800',
       shipping: 'bg-purple-100 text-purple-800',
       delivered: 'bg-green-100 text-green-800',
+      completed: 'bg-green-100 text-green-800',
       cancelled: 'bg-red-100 text-red-800',
     };
     return colors[status] || 'bg-gray-100 text-gray-800';
+  };
+
+  const getStatusLabel = (status) => {
+    const labels = {
+      pending: 'Chờ xử lý',
+      confirmed: 'Đã xác nhận',
+      shipping: 'Đang giao',
+      delivered: 'Đã giao',
+      completed: 'Hoàn thành',
+      cancelled: 'Đã hủy',
+    };
+    return labels[status] || status;
+  };
+
+  // Helper function to format currency without decimals
+  const formatCurrency = (amount) => {
+    return Math.round(amount).toLocaleString('vi-VN');
   };
 
   return (
@@ -81,7 +99,7 @@ const AdminOrders = () => {
                         order.status
                       )}`}
                     >
-                      {order.status}
+                      {getStatusLabel(order.status)}
                     </span>
                   </div>
 
@@ -103,10 +121,7 @@ const AdminOrders = () => {
                             {item.item?.title || 'Item'} x {item.quantity}
                           </span>
                           <span>
-                            {(item.price_per_unit * item.quantity).toLocaleString(
-                              'vi-VN'
-                            )}
-                            ₫
+                            {formatCurrency(item.price_per_unit * item.quantity)}₫
                           </span>
                         </div>
                       ))}
@@ -116,22 +131,22 @@ const AdminOrders = () => {
                   <div className="border-t pt-4 space-y-2">
                     <div className="flex justify-between text-gray-600">
                       <span>Tổng tiền hàng:</span>
-                      <span>{order.total_amount.toLocaleString('vi-VN')}₫</span>
+                      <span>{formatCurrency(order.total_amount)}₫</span>
                     </div>
                     {order.discount_amount > 0 && (
                       <div className="flex justify-between text-green-600">
                         <span>Giảm giá:</span>
-                        <span>-{order.discount_amount.toLocaleString('vi-VN')}₫</span>
+                        <span>-{formatCurrency(order.discount_amount)}₫</span>
                       </div>
                     )}
                     <div className="flex justify-between text-gray-600">
                       <span>Phí vận chuyển:</span>
-                      <span>{order.shipping_fee.toLocaleString('vi-VN')}₫</span>
+                      <span>{formatCurrency(order.shipping_fee)}₫</span>
                     </div>
                     <div className="flex justify-between text-xl font-bold text-gray-800 pt-2 border-t">
                       <span>Tổng cộng:</span>
                       <span className="text-orange-600">
-                        {order.final_amount.toLocaleString('vi-VN')}₫
+                        {formatCurrency(order.final_amount)}₫
                       </span>
                     </div>
                   </div>

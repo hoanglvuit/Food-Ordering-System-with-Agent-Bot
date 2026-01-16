@@ -30,12 +30,14 @@ const Header = () => {
             </Link>
             {isAuthenticated && (
               <>
-                <Link
-                  to="/orders"
-                  className="text-gray-700 hover:text-orange-600 transition-colors font-medium"
-                >
-                  Đơn hàng
-                </Link>
+                {!isSuperuser && (
+                  <Link
+                    to="/orders"
+                    className="text-gray-700 hover:text-orange-600 transition-colors font-medium"
+                  >
+                    Đơn hàng
+                  </Link>
+                )}
                 <Link
                   to="/cart"
                   className="text-gray-700 hover:text-orange-600 transition-colors font-medium"

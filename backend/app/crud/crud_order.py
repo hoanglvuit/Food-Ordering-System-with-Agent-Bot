@@ -39,7 +39,7 @@ class CRUDOrder(CRUDBase[Order, OrderCreate, OrderUpdate]):
         shipping_config = crud_shipping.get_current(db)
         shipping_fee = 0.0
         # Simulation: Random distance as requested by user ("hãy random ra 1 distance trong api")
-        distance_km = random.uniform(1.0, 15.0)
+        distance_km = random.uniform(1.0, 10.0)
 
         if shipping_config:
             shipping_fee = shipping_config.base_fee + (

@@ -54,7 +54,7 @@ Hãy:
     )
     messages = state["messages"] + [request]
     response = llm.invoke(messages)
-    print(f"\n🤖 Bot: {response.content}\n")
+    # print(f"\n🤖 Bot: {response.content}\n")
     return {"messages": messages + [response]}
 
 
@@ -130,7 +130,7 @@ def solve_unclear(state: AgentState):
 
     # print(f"Solve unclear: {messages}")
     response = llm.invoke(messages)
-    print(f"\n🤖 Bot: {response.content}\n")
+    # print(f"\n🤖 Bot: {response.content}\n")
     return {
         "messages": state["messages"]
         + [response],  # Tại sao không thêm request, vì nó không cần thiết
@@ -143,12 +143,12 @@ def solve_unclear(state: AgentState):
 
 def solve_buy(state: AgentState):
     # print("Come here solve_buy")
-    request = SystemMessage(
+    request = HumanMessage(
         content="Hãy hỏi khách muốn mua gì trong các món đang có không"
     )
     messages = state["messages"] + [request]
     response = llm.invoke(messages)
-    print(f"\n🤖 Bot: {response.content}\n")
+    # print(f"\n🤖 Bot: {response.content}\n")
     return {
         "messages": state["messages"]
         + [response],  # Tương tự không cần thêm request vì không cần thiết
@@ -179,9 +179,9 @@ def solve_not_buy(state: AgentState):
         if total > 0:
             cart_summary += f"\nTổng: {total:,}đ"
         request = SystemMessage(
-            content=f"Khách hàng đã mua {cart_summary}. Với tổng tiền là {total:,}đ. Hãy thống kê lại cho họ đi. Và chào tạm biệt thân thiện. "
+            content=f"Khách hàng đã mua {cart_summary}. Với tổng tiền là {total:,}đ. BẠN CHỈ CẦN BẢO KHÁCH ĐẾN GIỎ HÀNG ĐỂ THANH TOÁN"
         )
     messages = state["messages"] + [request]
     response = llm.invoke(messages)
-    print(f"\n🤖 Bot: {response.content}\n")
+    # print(f"\n🤖 Bot: {response.content}\n")
     return {"messages": messages + [response]}
