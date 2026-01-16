@@ -54,12 +54,30 @@ Hãy:
     )
     messages = state["messages"] + [request]
     response = llm.invoke(messages)
-    # print(f"\n🤖 Bot: {response.content}\n")
+    print(f"\n🤖 Bot: {response.content}\n")
     return {"messages": messages + [response]}
 
 
 def get_user_input(state: AgentState):
-    """Lấy input từ người dùng"""
+    """
+    Lấy input từ người dùng.
+
+    Khi chạy CLI: sử dụng input() như bình thường
+    Khi chạy API: node này sẽ bị interrupt trước khi chạy,
+    và user message sẽ được inject vào state từ bên ngoài.
+
+    Trong trường hợp API, node này vẫn được gọi nhưng với state
+    đã có user message (được thêm từ API handler).
+    """
+    # Kiểm tra xem có pending_user_input trong state không (từ API)
+    if state.get("pending_user_input"):
+        user_input = state["pending_user_input"]
+        return {
+            "messages": state["messages"] + [HumanMessage(content=user_input)],
+            "pending_user_input": None,  # Clear sau khi sử dụng
+        }
+
+    # Fallback cho CLI mode
     user_input = input("👤 Bạn: ").strip()
     return {"messages": state["messages"] + [HumanMessage(content=user_input)]}
 

@@ -64,4 +64,5 @@ class AgentState(TypedDict):
     user_choice_messages: (
         List  # Conversation history nhưng dành cho việc xác định intent
     )
+    pending_user_input: Optional[str] = None  # Input từ frontend/API
     # intent_items_str: str

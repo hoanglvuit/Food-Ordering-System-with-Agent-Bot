@@ -3,6 +3,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import Header from './components/Header';
 import ProtectedRoute from './components/ProtectedRoute';
+import ChatWidget from './components/ChatWidget';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -24,6 +25,7 @@ function App() {
         <ToastProvider>
           <div className="min-h-screen bg-gray-50 flex flex-col">
             <Header />
+            <ChatWidget />
             <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Home />} />
