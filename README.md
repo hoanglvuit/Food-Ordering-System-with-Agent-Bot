@@ -60,6 +60,9 @@ The core highlight of this project is the **AI Agent**, designed not just to "ch
 
 ### 🔄 Agent Workflow
 
+![Workflow](https://github.com/hoanglvuit/Food-Ordering-System-with-Assistant-Agent/blob/main/backend/app/agent/graph.png)
+
+
 The underlying graph operates as follows:
 
 1.  **`greet_user`**: Starts the session, presenting discounts.
