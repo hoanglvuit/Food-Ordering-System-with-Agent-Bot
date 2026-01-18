@@ -13,23 +13,6 @@ A modern, full-stack food ordering system integrated with an intelligent AI Cons
 ## DEMO
 https://private-user-images.githubusercontent.com/176000683/536920566-b7dc275f-8312-45bc-a9e7-f52aeaecc3d6.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njg1ODQwOTAsIm5iZiI6MTc2ODU4Mzc5MCwicGF0aCI6Ii8xNzYwMDA2ODMvNTM2OTIwNTY2LWI3ZGMyNzVmLTgzMTItNDViYy1hOWU3LWY1MmFlYWVjYzNkNi5tcDQ_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjYwMTE2JTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI2MDExNlQxNzE2MzBaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01YzJlYjA1MDRmNDFjNjBlZjE4M2M1M2IwMzIzNTQ3ZDJjNmI1YzM5NWM4NDgwNDA3Y2UzMDJiMDcwODEzZWJhJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.ZCSKurVRbthcT804OYaNAsC49PHyeb1kDE1HswrVpSA
 
-## 🛠 Tech Stack
-
-### Backend
--   **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (High performance, easy to use)
--   **Database**: PostgreSQL
--   **ORM**: SQLAlchemy + Alembic (Migrations)
--   **AI & Logic**:
-    -   **LangChain**: Base abstractions for LLMs.
-    -   **LangGraph**: State orchestration for the agent.
-    -   **Google Gemini 2.0 Flash**: The brain of the agent.
-
-### Frontend
--   **Framework**: [React](https://react.dev/) (Vite)
--   **Styling**: TailwindCSS (Modern, responsive design)
--   **State Management**: React Hooks & Context
-
----
 
 ## 🤖 The AI Clerk (Agent Deep Dive)
 
@@ -72,6 +55,24 @@ The underlying graph operates as follows:
     -   If **NOT_BUY**: Routes to `solve_not_buy`.
     -   If **UNCLEAR**: Routes to `solve_unclear`.
 4.  **Solvers (`solve_*`)**: execute the business logic (confirming order, asking for clarification) and then **loop back** to `get_user_input` to continue the conversation.
+
+## 🛠 Tech Stack
+
+### Backend
+-   **Framework**: [FastAPI](https://fastapi.tiangolo.com/) (High performance, easy to use)
+-   **Database**: PostgreSQL
+-   **ORM**: SQLAlchemy + Alembic (Migrations)
+-   **AI & Logic**:
+    -   **LangChain**: Base abstractions for LLMs.
+    -   **LangGraph**: State orchestration for the agent.
+    -   **Google Gemini 2.0 Flash**: The brain of the agent.
+
+### Frontend
+-   **Framework**: [React](https://react.dev/) (Vite)
+-   **Styling**: TailwindCSS (Modern, responsive design)
+-   **State Management**: React Hooks & Context
+
+---
 
 ## 🚀 Getting Started
 
