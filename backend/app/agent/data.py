@@ -64,6 +64,28 @@ def get_discount_items() -> list[Item]:
         return items
 
 
+def get_user_name(user_id: int) -> str:
+    with engine.connect() as conn:
+        result = conn.execute(
+            text("SELECT full_name FROM user WHERE id = :id"), {"id": user_id}
+        )
+        row = result.fetchone()
+        if row and row.full_name:
+            return row.full_name
+        # Fallback query if full_name is null or not found, maybe email?
+        # But for now let's just return Unknown or handle logic elsewhere.
+        # Actually let's check email if full_name is None
+        if row:  # row exists but full_name is None
+            result_email = conn.execute(
+                text("SELECT email FROM user WHERE id = :id"), {"id": user_id}
+            )
+            row_email = result_email.fetchone()
+            if row_email:
+                return row_email.email.split("@")[0]  # Return part before @ of email
+
+        return "Bạn"
+
+
 def get_item_by_id(item_id: int) -> Item | None:
     with engine.connect() as conn:
         result = conn.execute(

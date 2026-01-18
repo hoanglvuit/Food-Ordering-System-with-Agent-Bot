@@ -50,6 +50,7 @@ class CartItem(TypedDict):
 
 
 class AgentState(TypedDict):
+    user_id: Optional[int]  # ID của user hiện tại (nếu đã login)
     user_name: str  # Dùng để chào hỏi
     all_items: List[dict]  # Dùng để tư vấn các món (nếu cần)
     discount_items: List[dict]  # Dùng để tư vấn các món đang giảm giá lúc ban đầu

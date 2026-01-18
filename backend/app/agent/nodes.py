@@ -4,6 +4,7 @@ from schema import AgentState, UserIntent
 from config import llm, structured_llm
 from prompt import system_prompt, order_system_prompt
 from data import (
+    get_user_name,
     get_all_items,
     get_discount_items,
     get_item_by_id,
@@ -22,8 +23,12 @@ def get_data(state: AgentState):
 
     items_str = format_items_for_intent(all_items)
 
+    user_name = "Bạn"
+    if state.get("user_id"):
+        user_name = get_user_name(state["user_id"])
+
     return {
-        "user_name": "Lê Hoàng",
+        "user_name": user_name,
         "all_items": [item.model_dump() for item in all_items],
         "discount_items": [item.model_dump() for item in discount_items],
         "current_cart": [],

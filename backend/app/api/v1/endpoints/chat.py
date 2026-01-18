@@ -14,6 +14,7 @@ from pydantic import BaseModel
 from langchain_core.messages import HumanMessage
 import json
 
+from app import deps, models
 from graph import build_graph
 
 router = APIRouter()
@@ -48,8 +49,15 @@ class ChatResponse(BaseModel):
     thread_id: str
 
 
+from app import deps, models
+
+
+# ... imports ...
 @router.post("/message")
-async def chat_message(request: ChatRequest):
+async def chat_message(
+    request: ChatRequest,
+    current_user: models.User = deps.Depends(deps.get_current_user),
+):
     """
     Handle a chat message and return a streaming response.
 
@@ -65,8 +73,9 @@ async def chat_message(request: ChatRequest):
     async def generate():
         if request.is_first_message:
             # First message: Initialize and run until interrupt (before get_user_input)
+            # Pass user_id to initial state
             async for msg, metadata in graph.astream(
-                {},
+                {"user_id": current_user.id},
                 config=config,
                 stream_mode="messages",
             ):
@@ -80,7 +89,11 @@ async def chat_message(request: ChatRequest):
             # Subsequent messages: Update state with user input and resume
             try:
                 # Inject user input into state and resume from where we stopped
-                graph.update_state(config, {"pending_user_input": request.message})
+                # Also ensure user_id is updated in case it wasn't there (though it should be persisted)
+                graph.update_state(
+                    config,
+                    {"pending_user_input": request.message, "user_id": current_user.id},
+                )
 
                 # Resume execution - this will run get_user_input (which reads pending_user_input)
                 # then parse_user_order, then solve_*, then stop before get_user_input again
